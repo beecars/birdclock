@@ -1,0 +1,140 @@
+# One species (common name) per line. Lines starting with # are ignored.
+# 100 species commonly found across the Pacific Northwest (WA/OR, various
+# habitats: urban/suburban, lowland forest, wetland/riparian, coastal,
+# montane, and shrub-steppe east of the Cascades).
+
+# Chickadees, bushtit, nuthatches
+Black-capped Chickadee
+Chestnut-backed Chickadee
+Mountain Chickadee
+Bushtit
+Red-breasted Nuthatch
+White-breasted Nuthatch
+Pygmy Nuthatch
+
+# Wrens
+Bewick's Wren
+Pacific Wren
+House Wren
+Marsh Wren
+Canyon Wren
+Rock Wren
+
+# Thrushes
+American Robin
+Varied Thrush
+Swainson's Thrush
+Hermit Thrush
+Townsend's Solitaire
+
+# Kinglets
+Golden-crowned Kinglet
+Ruby-crowned Kinglet
+
+# Sparrows
+Song Sparrow
+Spotted Towhee
+Dark-eyed Junco
+White-crowned Sparrow
+Golden-crowned Sparrow
+Fox Sparrow
+Chipping Sparrow
+Savannah Sparrow
+Lincoln's Sparrow
+Vesper Sparrow
+
+# Finches
+American Goldfinch
+House Finch
+Purple Finch
+Pine Siskin
+Red Crossbill
+Evening Grosbeak
+Cassin's Finch
+
+# Grosbeaks, buntings
+Black-headed Grosbeak
+Lazuli Bunting
+
+# Warblers
+Yellow Warbler
+Wilson's Warbler
+Common Yellowthroat
+Orange-crowned Warbler
+Yellow-rumped Warbler
+MacGillivray's Warbler
+Black-throated Gray Warbler
+Townsend's Warbler
+Nashville Warbler
+
+# Vireos
+Warbling Vireo
+Cassin's Vireo
+Hutton's Vireo
+Red-eyed Vireo
+
+# Flycatchers
+Willow Flycatcher
+Pacific-slope Flycatcher
+Olive-sided Flycatcher
+Western Wood-Pewee
+Ash-throated Flycatcher
+Say's Phoebe
+
+# Swallows
+Violet-green Swallow
+Barn Swallow
+Tree Swallow
+Cliff Swallow
+Northern Rough-winged Swallow
+
+# Corvids
+Steller's Jay
+California Scrub-Jay
+Canada Jay
+American Crow
+Common Raven
+Black-billed Magpie
+Clark's Nutcracker
+
+# Woodpeckers
+Northern Flicker
+Downy Woodpecker
+Hairy Woodpecker
+Pileated Woodpecker
+Red-breasted Sapsucker
+White-headed Woodpecker
+
+# Hummingbirds
+Anna's Hummingbird
+Rufous Hummingbird
+Black-chinned Hummingbird
+Calliope Hummingbird
+
+# Doves, pigeons, quail
+Mourning Dove
+Band-tailed Pigeon
+Eurasian Collared-Dove
+California Quail
+Mountain Quail
+
+# Owls
+Great Horned Owl
+Barred Owl
+Western Screech-Owl
+Northern Saw-whet Owl
+Northern Pygmy-Owl
+
+# Blackbirds, orioles, meadowlark
+Red-winged Blackbird
+Brown-headed Cowbird
+Bullock's Oriole
+Western Meadowlark
+Brewer's Blackbird
+
+# Misc
+Western Tanager
+Cedar Waxwing
+European Starling
+Brown Creeper
+American Dipper
