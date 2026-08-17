@@ -105,6 +105,33 @@ def _to_recording(raw: dict) -> Recording:
     )
 
 
+# Xeno-canto's `en:` field is an exact match against whatever English name is in *its*
+# database, which sometimes diverges from the eBird/AOS name in species_list.txt -- either
+# just a missing hyphen in a compound group name ("Western Screech-Owl" -> "Western Screech
+# Owl"), or a genuinely different name for the same species (older/regional common name,
+# British spelling). Only species that hit this are listed; if a fresh species_list.txt
+# entry comes up with zero results, check whether it's one of these two cases before
+# assuming the species has no recordings at all.
+XC_NAME_OVERRIDES = {
+    "Yellow-rumped Warbler": "Myrtle Warbler",
+    "Black-throated Gray Warbler": "Black-throated Grey Warbler",
+    "Common Raven": "Northern Raven",
+    "European Starling": "Common Starling",
+}
+
+
+def _name_variants(species: str) -> list[str]:
+    """Candidate English names to try against Xeno-canto's exact en: match, in order."""
+    variants = [species]
+    no_hyphen = species.replace("-", " ")
+    if no_hyphen != species:
+        variants.append(no_hyphen)
+    override = XC_NAME_OVERRIDES.get(species)
+    if override and override not in variants:
+        variants.append(override)
+    return variants
+
+
 def search(species: str, quality: str = "A") -> list[Recording]:
     """Search Xeno-canto for a species at a given minimum quality rating.
 
@@ -115,6 +142,10 @@ def search(species: str, quality: str = "A") -> list[Recording]:
     "song"-tagged recordings when ranking candidates, so this just widens
     the pool instead of hard-excluding species that lack that tag.
 
+    Tries a few name variants (see _name_variants()) before giving up, since
+    Xeno-canto's stored English name for a species doesn't always match the
+    eBird/AOS name callers pass in.
+
     Args:
         species: The species common name, e.g. "American Robin".
         quality: Minimum Xeno-canto quality rating to search for, e.g. "A".
@@ -122,14 +153,20 @@ def search(species: str, quality: str = "A") -> list[Recording]:
     Returns:
         Matching recordings, unranked.
     """
-    params = {
-        "query": f'en:"{species}" q:{quality}',
-        "key": _api_key(),
-    }
-    response = requests.get(API_URL, params=params, timeout=30)
-    response.raise_for_status()
-    data = response.json()
-    return [_to_recording(r) for r in data.get("recordings", [])]
+    for name in _name_variants(species):
+        params = {
+            "query": f'en:"{name}" q:{quality}',
+            "key": _api_key(),
+        }
+        response = requests.get(API_URL, params=params, timeout=30)
+        response.raise_for_status()
+        data = response.json()
+        recordings = [_to_recording(r) for r in data.get("recordings", [])]
+        if recordings:
+            if name != species:
+                print(f"    (found under Xeno-canto's name {name!r})")
+            return recordings
+    return []
 
 
 MIN_RECORDING_SECONDS = 5
