@@ -140,12 +140,62 @@ curation, no month folders. The code that runs on the Pi itself lives in
   break a photo lookup.
 - **`i2samp.py`** — Adafruit's I2S amp setup script, for initial hardware
   bring-up on the Pi.
+- **`start_birdclock.sh`** — launches `birdclock.py` and `birdclock_web.py`
+  together in the background; this is what the boot cron job runs.
 
-Sync `deploy/*.py` and `birdsongs/` to the Pi (e.g. `rsync`). All the
-`deploy/` Python files need to stay in the same directory there, since
-`bird_names.py` is imported by relative path rather than installed as a
-package. Run `birdclock.py` on boot (cron or systemd), and `birdclock_web.py`
-alongside it to serve the status page at `http://<pi-hostname>.local:5000`.
+### Setup
+
+1. **Clone the repo onto the Pi** (as the `birdclock` user):
+
+   ```sh
+   git clone <repo-url> ~/birdclock
+   ```
+
+   All the `deploy/` Python files need to stay in the same directory,
+   since `bird_names.py` is imported by relative path rather than
+   installed as a package — cloning the whole repo handles that
+   automatically.
+
+2. **Install Flask** into the Pi's system Python (no venv needed for
+   `deploy/`, since it has no dependencies beyond Flask):
+
+   ```sh
+   pip3 install flask --break-system-packages   # or: sudo apt install python3-flask
+   ```
+
+3. **Sync `birdsongs/`** from your dev machine, since generated clips are
+   gitignored and won't come down with `git clone`:
+
+   ```sh
+   rsync -avz birdsongs/ birdclock@<pi-hostname>.local:~/birdclock/birdsongs/
+   ```
+
+4. **Run on boot via cron.** `deploy/birdclock.py` and
+   `deploy/birdclock_web.py` hardcode their paths to
+   `/home/birdclock/birdclock/birdsongs` and
+   `/home/birdclock/birdclock_schedule.json` — if you clone to a
+   different location or run as a different user, update those constants
+   at the top of each file to match. Register the boot script:
+
+   ```sh
+   (crontab -l 2>/dev/null; echo "@reboot /home/birdclock/birdclock/deploy/start_birdclock.sh") | crontab -
+   ```
+
+   The status page is then served at `http://<pi-hostname>.local:5000`.
+
+### Updating the deployed code
+
+If the Pi has no general internet access (only local mDNS, e.g.
+`birdclock.local` resolves but `git pull` fails with a DNS error), push
+changed files directly instead of pulling from GitHub:
+
+```sh
+scp deploy/birdclock.py birdclock@<pi-hostname>.local:~/birdclock/deploy/birdclock.py
+```
+
+Then restart the running processes on the Pi (kill the old
+`birdclock.py`/`birdclock_web.py` PIDs and re-run
+`deploy/start_birdclock.sh`, or just reboot).
 
 ## License
 
