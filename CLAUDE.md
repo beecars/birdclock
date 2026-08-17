@@ -16,8 +16,9 @@ covers both halves of that project:
   species at random from `birdsongs/` on a daily schedule and serves a
   small status web page.
 
-`birdsongs/` is a flat pool of clips synced to the Pi's `~/birdsongs` —
-no seasonal curation, no month folders. Each species gets `--candidates`
+`birdsongs/` is a flat pool of clips synced to the Pi's `~/birdclock/birdsongs`
+(the repo is cloned onto the Pi at `~/birdclock`) — no seasonal curation,
+no month folders. Each species gets `--candidates`
 independent clips (3 by default), and on the Pi, a species' hour plays
 *all* of its clips back to back — the hourly play unit is a species, not
 a single clip.
@@ -33,8 +34,7 @@ uv run birdclock-songs fetch "Blue Jay" --from-file species_list.txt --force
 
 Requires `ffmpeg` on PATH (used by `pydub`) and a Xeno-canto API key set as
 `XENO_CANTO_API_KEY` in a `.env` file at the repo root (loaded via
-`python-dotenv`). Note: the README references a `.env.example` file that
-does not currently exist in the repo.
+`python-dotenv`); copy `.env.example` to `.env` and fill in the key.
 
 There is no test suite, linter, or formatter configured in this project.
 
@@ -120,6 +120,24 @@ Xeno-canto:
   lookup.
 - **`i2samp.py`** — Adafruit's I2S amp setup script, for initial hardware
   bring-up on the Pi.
+- **`start_birdclock.sh`** — launches `birdclock.py` and `birdclock_web.py`
+  together in the background; this is what the boot cron job runs.
 - All `deploy/` Python files must stay in the same directory on the Pi
   (`bird_names.py` is imported by relative path, not installed as a
   package).
+- Flask is declared as the `deploy` optional-dependency group in
+  `pyproject.toml` (`pip install ".[deploy]"`), since `deploy/` has no
+  other third-party dependencies and doesn't need `collect/`'s.
+
+### How the Pi actually runs this
+
+On the deployed Pi (see `README.md`'s "Deploying to the Pi" section for
+full setup steps): the repo is cloned to `~/birdclock`, `deploy/`'s two
+long-running scripts run under the Pi's system Python (no venv), and a
+user crontab `@reboot` entry runs `deploy/start_birdclock.sh` on boot —
+there's no systemd unit. `birdclock.py` and `birdclock_web.py` hardcode
+absolute paths (`SONGS_DIR`, `SCHEDULE_FILE`) rather than deriving them
+from `__file__`, so cloning to a different location or running as a
+different user requires updating those constants by hand. The Pi has
+local mDNS (`birdclock.local`) but no general internet DNS resolution, so
+`git pull` on the Pi doesn't work — push code changes with `scp` instead.

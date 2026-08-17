@@ -206,6 +206,13 @@ Then restart the running processes on the Pi (kill the old
 `birdclock.py`/`birdclock_web.py` PIDs and re-run
 `deploy/start_birdclock.sh`, or just reboot).
 
+## AI disclosure
+
+Portions of this project — including code, documentation, and Raspberry
+Pi deployment work — were written with assistance from Claude Code, an
+AI coding assistant. All AI-assisted changes were reviewed and tested by
+the maintainer before being committed.
+
 ## License
 
 Generated audio clips are derived from Xeno-canto recordings and remain
