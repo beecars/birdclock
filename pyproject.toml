@@ -11,6 +11,9 @@ dependencies = [
     "numpy>=1.26",
 ]
 
+[project.optional-dependencies]
+deploy = ["flask>=3.0"]
+
 [project.scripts]
 birdclock-songs = "collect.cli:main"
 

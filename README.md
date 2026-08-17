@@ -97,6 +97,11 @@ uv run birdclock-songs fetch --from-file species_list.txt
 uv run birdclock-songs fetch "Blue Jay" --from-file species_list.txt --force
 ```
 
+`species_list.txt` as checked in is ~100 species common to the Pacific
+Northwest. If you're building your own clock somewhere else, edit or
+replace this file with species relevant to your area before fetching —
+it's a plain text file, one common name per line, `#`-comments allowed.
+
 | Flag | Description |
 | --- | --- |
 | `--from-file <path>` | Read species names (one per line) from a text file. Lines starting with `#` are ignored. |
@@ -162,6 +167,10 @@ curation, no month folders. The code that runs on the Pi itself lives in
    ```sh
    pip3 install flask --break-system-packages   # or: sudo apt install python3-flask
    ```
+
+   (This is the same dependency declared as the `deploy` extra in
+   `pyproject.toml`, in case you'd rather run `pip3 install ".[deploy]"`
+   from a checkout instead.)
 
 3. **Sync `birdsongs/`** from your dev machine, since generated clips are
    gitignored and won't come down with `git clone`:
