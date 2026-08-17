@@ -20,7 +20,7 @@ from bird_names import species_slug_from_filename, bird_name_from_filename
 # ── Configuration ──────────────────────────────────────────────────────────────
 
 # Path to the flat folder of bird song clips on the SD card
-SONGS_DIR = "/home/birdclock/birdsongs"
+SONGS_DIR = "/home/birdclock/birdclock/birdsongs"
 
 # Active hours (inclusive) — 7am to 9pm
 START_HOUR = 7
