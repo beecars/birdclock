@@ -23,9 +23,8 @@ deploy/            playback + web status page             (Raspberry Pi)
 
 ## Collecting songs
 
-For each species, the fetch pipeline builds `--candidates` clips (3 by
-default) — each one an independent recording of that species, not just a
-top pick:
+For each species, the fetch pipeline builds `--candidates` independent
+clips (3 by default):
 
 1. Searches Xeno-canto for high-quality, song-type recordings and ranks
    candidates by how likely they are to be a clean, isolated song (exact
@@ -123,16 +122,15 @@ can cleanly restore the display name later. Species that already have all
 
 ## Deploying to the Pi
 
-`birdsongs/` is a flat pool of every species' clips — no seasonal
-curation, no month folders. The code that runs on the Pi itself lives in
-`deploy/`:
+`birdsongs/` is a flat pool of every species' clips. The code that runs
+on the Pi itself lives in `deploy/`:
 
 - **`birdclock.py`** — the main loop. Each day it groups `birdsongs/` by
   species, picks 15 at random, and assigns one per active hour (7am–9pm
   by default). When a species' hour comes up, all of its clips play back
-  to back through `mpg123` — that's the hourly play unit, not a single
-  clip. Writes the day's schedule to `birdclock_schedule.json` so the web
-  server can read it.
+  to back through `mpg123` — a species is the hourly play unit. Writes
+  the day's schedule to `birdclock_schedule.json` so the web server can
+  read it.
 - **`birdclock_web.py`** — a small Flask app that reads that schedule
   file and shows the current hour's species (name + Wikipedia photos) on
   a local status page.
@@ -157,9 +155,8 @@ curation, no month folders. The code that runs on the Pi itself lives in
    ```
 
    All the `deploy/` Python files need to stay in the same directory,
-   since `bird_names.py` is imported by relative path rather than
-   installed as a package — cloning the whole repo handles that
-   automatically.
+   since `bird_names.py` is imported by relative path, not installed as
+   a package. Cloning the whole repo handles that automatically.
 
 2. **Install Flask** into the Pi's system Python (no venv needed for
    `deploy/`, since it has no dependencies beyond Flask):
