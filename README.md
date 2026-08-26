@@ -4,6 +4,8 @@ A bird-song learning clock: a Raspberry Pi plays a different local bird
 species every hour, cycling through all of that species' recorded clips
 back to back, and shows what's currently playing on a small web page.
 
+A 3D-printable model is provided: https://www.printables.com/model/1812604-birdsong-learning-clock.
+
 The project has two halves:
 
 - **Collection** (`collect/`) — a CLI tool that fetches bird song
