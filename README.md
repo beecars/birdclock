@@ -193,12 +193,11 @@ on the Pi itself lives in `deploy/`:
 
 ### Updating the deployed code
 
-If the Pi has no general internet access (only local mDNS, e.g.
-`birdclock.local` resolves but `git pull` fails with a DNS error), push
-changed files directly instead of pulling from GitHub:
+SSH into the Pi and pull the latest code from GitHub:
 
 ```sh
-scp deploy/birdclock.py birdclock@<pi-hostname>.local:~/birdclock/deploy/birdclock.py
+ssh birdclock@<pi-hostname>.local
+cd ~/birdclock && git pull
 ```
 
 Then restart the running processes on the Pi (kill the old

@@ -139,5 +139,5 @@ there's no systemd unit. `birdclock.py` and `birdclock_web.py` hardcode
 absolute paths (`SONGS_DIR`, `SCHEDULE_FILE`) rather than deriving them
 from `__file__`, so cloning to a different location or running as a
 different user requires updating those constants by hand. The Pi has
-local mDNS (`birdclock.local`) but no general internet DNS resolution, so
-`git pull` on the Pi doesn't work — push code changes with `scp` instead.
+local mDNS (`birdclock.local`) and internet access, so `git pull` on the
+Pi works for pulling code changes.

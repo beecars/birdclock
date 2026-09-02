@@ -33,7 +33,7 @@ SPECIES_PER_DAY = 15
 SCHEDULE_FILE = "/home/birdclock/birdclock_schedule.json"
 
 # Volume as a percentage (mpg123 default is 100, can go above)
-VOLUME = 130
+VOLUME = 100
 
 # ── Core functions ─────────────────────────────────────────────────────────────
 
