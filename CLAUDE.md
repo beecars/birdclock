@@ -100,13 +100,19 @@ Xeno-canto:
   (via `bird_names.species_slug_from_filename()`), picks `SPECIES_PER_DAY`
   (15) at random, and assigns one species per active hour
   (`START_HOUR`–`END_HOUR`). When a species' hour comes up, `play_species()`
-  plays every one of its clips back to back through `mpg123`. Writes the
-  day's schedule (hour → list of filenames) to `birdclock_schedule.json`
-  so the web server can read it.
+  plays every one of its clips back to back through `mpg123`, reading
+  `get_current_volume()` before each clip so a volume/mute change from the
+  web UI takes effect on the next clip without restarting the process.
+  Writes the day's schedule (hour → list of filenames) to
+  `birdclock_schedule.json` so the web server can read it.
 - **`birdclock_web.py`** — small Flask app that reads that schedule file
   and shows the current hour's species (name + Wikipedia photos) on a local
-  web page. Uses the first filename in the hour's clip list to derive the
-  display name.
+  web page, plus a volume slider and mute button. Uses the first filename
+  in the hour's clip list to derive the display name. The slider/mute
+  control POSTs to `/api/volume`, which persists `{volume, muted}` to
+  `birdclock_volume.json` — the same file `birdclock.py` polls via
+  `get_current_volume()`, making this the only channel between the two
+  processes.
 - **`bird_names.py`** — shared helpers. `species_slug_from_filename()`
   strips the trailing candidate index (`bewicks_wren_2.mp3` →
   `bewicks_wren`) so `birdclock.py` can group clips by species.

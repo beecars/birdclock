@@ -135,7 +135,7 @@ on the Pi itself lives in `deploy/`:
   read it.
 - **`birdclock_web.py`** — a small Flask app that reads that schedule
   file and shows the current hour's species (name + Wikipedia photos) on
-  a local status page.
+  a local status page, with a volume slider and mute button.
 - **`bird_names.py`** — shared helper that turns a clip's filename into a
   species slug and display name, restoring apostrophes that were dropped
   for filesystem safety (`bewicks_wren_2.mp3` → `"Bewick's Wren"`). Both

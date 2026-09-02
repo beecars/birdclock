@@ -32,8 +32,25 @@ SPECIES_PER_DAY = 15
 # File to store today's schedule so the web page can read it
 SCHEDULE_FILE = "/home/birdclock/birdclock_schedule.json"
 
-# Volume as a percentage (mpg123 default is 100, can go above)
-VOLUME = 80
+# Where the current volume/mute state (set via the web UI) is persisted
+VOLUME_FILE = "/home/birdclock/birdclock_volume.json"
+
+# Default volume as a percentage (mpg123 default is 100, can go above)
+DEFAULT_VOLUME = 80
+
+
+def get_current_volume():
+    """Read the current volume/mute state set via the web UI, falling back to the default."""
+    if not os.path.exists(VOLUME_FILE):
+        return DEFAULT_VOLUME
+    try:
+        with open(VOLUME_FILE, "r") as f:
+            data = json.load(f)
+        if data.get("muted"):
+            return 0
+        return int(data.get("volume", DEFAULT_VOLUME))
+    except Exception:
+        return DEFAULT_VOLUME
 
 # ── Core functions ─────────────────────────────────────────────────────────────
 
@@ -106,7 +123,7 @@ def play_species(folder, filenames):
             continue
         subprocess.run([
             "mpg123", "-o", "alsa", "-a", "hw:1,0",
-            "--gain", str(VOLUME),
+            "--gain", str(get_current_volume()),
             "-q", filepath
         ])
 
